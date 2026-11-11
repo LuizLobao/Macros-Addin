@@ -1,7 +1,7 @@
 Attribute VB_Name = "modUtilitarios"
 ' ============================================================
 ' meuAddin - Macros Utilitárias
-' Versão: 2.1
+' Versão: 2.2
 ' Autor: Lobão
 ' Descrição: Macros de uso frequente com validação de entrada,
 '            tratamento de erros e boas práticas de VBA.
@@ -532,56 +532,77 @@ End Sub
 
 ' ============================================================
 ' MACRO: SnapshotDados
-' Grava uma "foto" (só valores) da aba ativa no fim da aba
-' HISTORICO do mesmo arquivo, com data/hora ao lado
+' Grava uma "foto" (só valores) da aba ativa em uma NOVA aba do
+' mesmo arquivo, com a guia laranja e carimbo de data/hora duas
+' colunas à direita do bloco. Em caso de erro, a aba criada é
+' descartada e nada fica pela metade.
 ' ============================================================
 Sub SnapshotDados()
     Dim wb As Workbook
-    Dim wsOrigem As Worksheet, wsHist As Worksheet
+    Dim wsOrigem As Worksheet, wsSnapshot As Worksheet
     Dim dados As Range
-    Dim ultimaLinha As Long
+    Dim nomeBase As String, nomeSnapshot As String, sufixo As String
+    Dim numero As Long
+    Dim telaAnterior As Boolean, avisosAnteriores As Boolean
+    Dim detalheErro As String
 
     If Not TemPlanilhaAtiva() Then Exit Sub
-    Set wb = ActiveWorkbook
-    Set wsOrigem = ActiveSheet
 
-    If StrComp(wsOrigem.Name, "HISTORICO", vbTextCompare) = 0 Then
-        MsgBox "Ative a aba que você quer fotografar (não a HISTORICO).", vbExclamation, "Snapshot"
+    Set wsOrigem = ActiveSheet
+    Set wb = wsOrigem.Parent
+    Set dados = wsOrigem.UsedRange
+
+    If dados.Columns.count > wsOrigem.Columns.count - 2 Then
+        MsgBox "A área usada é larga demais para incluir o carimbo de data e hora.", _
+               vbExclamation, "Snapshot"
         Exit Sub
     End If
 
+    ' Nome da aba respeitando o limite de 31 caracteres do Excel.
+    nomeBase = "snapshot-" & wsOrigem.Name
+    nomeSnapshot = Left$(nomeBase, 31)
+
+    Do While WorksheetExists(nomeSnapshot, wb)
+        numero = numero + 1
+        sufixo = "-" & CStr(numero)
+        nomeSnapshot = Left$(nomeBase, 31 - Len(sufixo)) & sufixo
+    Loop
+
+    telaAnterior = Application.ScreenUpdating
+    avisosAnteriores = Application.DisplayAlerts
     On Error GoTo ErroSnapshot
     Application.ScreenUpdating = False
 
-    ' Cria a HISTORICO no fim do arquivo, se ainda não existir
-    If Not WorksheetExists("HISTORICO", wb) Then
-        wb.Worksheets.Add(After:=wb.Sheets(wb.Sheets.count)).Name = "HISTORICO"
-        wsOrigem.Activate
-    End If
-    Set wsHist = wb.Worksheets("HISTORICO")
+    Set wsSnapshot = wb.Worksheets.Add(After:=wb.Sheets(wb.Sheets.count))
+    wsSnapshot.Name = nomeSnapshot
+    wsSnapshot.Tab.Color = RGB(255, 102, 0)
 
-    ' Primeira linha livre
-    If Application.WorksheetFunction.CountA(wsHist.Cells) = 0 Then
-        ultimaLinha = 1
-    Else
-        ultimaLinha = wsHist.Cells(wsHist.Rows.count, 1).End(xlUp).Row + 1
-    End If
+    ' Copia os valores da área usada, começando em A1.
+    wsSnapshot.Range("A1").Resize(dados.Rows.count, dados.Columns.count).Value2 = dados.Value2
 
-    ' Copia só os valores, sem passar pela área de transferência
-    Set dados = wsOrigem.UsedRange
-    wsHist.Cells(ultimaLinha, 1).Resize(dados.Rows.count, dados.Columns.count).Value = dados.Value
-
-    ' Carimbo de data/hora duas colunas à direita do bloco
-    With wsHist.Cells(ultimaLinha, dados.Columns.count + 2)
+    ' Deixa uma coluna em branco entre os dados e o carimbo.
+    With wsSnapshot.Cells(1, dados.Columns.count + 2)
         .Value = Now
         .NumberFormat = "dd/mm/yyyy hh:mm:ss"
     End With
 
-    Application.StatusBar = "Snapshot de '" & wsOrigem.Name & "' salvo na HISTORICO (linha " & ultimaLinha & ")."
-    GoTo Fim
+    wsOrigem.Activate
+    Application.StatusBar = "Snapshot de '" & wsOrigem.Name & _
+                            "' salvo na aba '" & nomeSnapshot & "'."
+    Application.ScreenUpdating = telaAnterior
+    Exit Sub
 
 ErroSnapshot:
-    MsgBox "Erro em SnapshotDados: " & Err.Description, vbCritical, "Erro"
-Fim:
-    Application.ScreenUpdating = True
+    detalheErro = Err.Description
+    On Error Resume Next
+    If Not wsSnapshot Is Nothing Then
+        Application.DisplayAlerts = False
+        wsSnapshot.Delete
+    End If
+    wsOrigem.Activate
+    Application.DisplayAlerts = avisosAnteriores
+    Application.ScreenUpdating = telaAnterior
+    On Error GoTo 0
+
+    MsgBox "Erro em SnapshotDados: " & detalheErro, vbCritical, "Snapshot"
 End Sub

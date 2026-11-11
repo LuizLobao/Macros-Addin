@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2] - 2026-11-11
+
+### Alterado
+- `SnapshotDados`: cada execução passa a criar uma **aba nova** (`snapshot-<nome da aba>`, com a guia laranja) em vez de empilhar os blocos no fim de uma única aba `HISTORICO`. O nome recebe sufixo numérico se já existir e respeita o limite de 31 caracteres do Excel.
+
+### Adicionado
+- `SnapshotDados`: recusa a operação quando a área usada é larga demais para caber o carimbo de data/hora.
+- `SnapshotDados`: em caso de erro, a aba recém-criada é excluída e `ScreenUpdating`/`DisplayAlerts` voltam ao estado anterior — nada fica pela metade.
+
 ## [2.1] - 2026-11-11
 
 Primeira versão publicada no GitHub.

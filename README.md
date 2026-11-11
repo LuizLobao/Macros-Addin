@@ -170,7 +170,7 @@ Se preferir não mexer no XML, há três alternativas:
 | [`LinhasVerdes`](#linhasverdes) | Seleção | Bordas verdes médias, sem borda esquerda |
 | [`BarraLateral`](#barralateral) | Seleção | Bordas escuras médias, sem borda direita |
 | [`FormatoBD`](#formatobd) | Aba ativa → aba nova | Despivota tabela (períodos em colunas → linhas) |
-| [`SnapshotDados`](#snapshotdados) | Aba ativa → HISTORICO | Grava os valores da aba com data/hora |
+| [`SnapshotDados`](#snapshotdados) | Aba ativa → nova aba | Grava os valores da aba com data/hora |
 | [`Copia_Imagem`](#copia_imagem) | Seleção | Copia como imagem (Ctrl + I) |
 | [`ExibirOcultarAbasComApoio`](#exibirocultarabascomapoio) | Arquivo ativo | Mostra/oculta abas com "apoio" no nome |
 | [`CriarSistemaAlertas`](#sistema-de-alertas) | Arquivo ativo | Cria a aba ALERTAS de auditoria |
@@ -279,11 +279,11 @@ Resultado na aba nova `<NomeDaAba>_BD`:
 
 ### `SnapshotDados`
 
-**O que faz:** tira uma "foto" da aba ativa — copia **somente os valores** do intervalo usado para o fim da aba `HISTORICO` do mesmo arquivo e grava a data/hora duas colunas à direita do bloco. Se a aba `HISTORICO` não existir, é criada no fim do arquivo.
+**O que faz:** tira uma "foto" da aba ativa — copia **somente os valores** do intervalo usado para uma **nova aba** do mesmo arquivo, com a guia em **laranja** e a data/hora duas colunas à direita do bloco.
 
-**Como usar:** ative a aba que quer registrar (ex.: um resumo diário calculado por fórmulas) e rode. Cada execução empilha um novo bloco embaixo do anterior, formando um histórico.
+**Como usar:** ative a aba que quer registrar (ex.: um resumo diário calculado por fórmulas) e rode. Cada execução cria uma aba nova chamada `snapshot-<nome da aba>`; se o nome já existir, recebe um sufixo numérico (`-1`, `-2`…), sempre dentro do limite de 31 caracteres do Excel.
 
-**Observações:** não roda com a própria `HISTORICO` ativa. Não usa a área de transferência, então não interfere no que você copiou antes.
+**Observações:** se a área usada for larga demais para caber o carimbo de data/hora, a macro avisa e não faz nada. Se der erro no meio, a aba recém-criada é descartada — nada fica pela metade. Não usa a área de transferência, então não interfere no que você copiou antes.
 
 ---
 
