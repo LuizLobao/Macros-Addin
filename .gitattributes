@@ -10,6 +10,9 @@
 *.xlsx binary
 *.xlsb binary
 
+# Pacote zipado do código-fonte
+*.zip binary
+
 # Texto comum
 *.md  text eol=lf
 *.xml text eol=lf
