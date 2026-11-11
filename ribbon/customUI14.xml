@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+  <ribbon>
+    <tabs>
+      <tab id="tabMacrosLobao" label="Macros Lobão">
+
+        <group id="grpLayout" label="Layout">
+          <button id="btnLayout1"      label="Layout 1"       size="large"  imageMso="FormatPainter"      onAction="rbLayout1"      screentip="Layout base: cabeçalho verde, sem grade, fonte padrão"/>
+          <button id="btnLayout2"      label="Layout 2"       size="large"  imageMso="SmartArtInsert"     onAction="rbLayout2"      screentip="Layout com painel escuro, título e caixa de gráfico"/>
+          <button id="btnFundoVerde"   label="Fundo verde"    size="normal" imageMso="CellFillColorPicker" onAction="rbFundoVerde"  screentip="Fundo verde + fonte branca centralizada na seleção"/>
+          <button id="btnLinhasVerdes" label="Linhas verdes"  size="normal" imageMso="BordersAll"         onAction="rbLinhasVerdes" screentip="Bordas verdes na seleção (sem borda esquerda)"/>
+          <button id="btnBarraLateral" label="Barra lateral"  size="normal" imageMso="BorderLeft"         onAction="rbBarraLateral" screentip="Bordas escuras na seleção (sem borda direita)"/>
+        </group>
+
+        <group id="grpDados" label="Dados">
+          <button id="btnFormatoBD"    label="Formato BD"     size="large"  imageMso="TableInsert"           onAction="rbFormatoBD"   screentip="Despivota a tabela da aba ativa (colunas de período viram linhas)"/>
+          <button id="btnSnapshot"     label="Snapshot"       size="normal" imageMso="FileSaveAs"            onAction="rbSnapshot"    screentip="Grava os valores da aba ativa na aba HISTORICO com data/hora"/>
+          <button id="btnCopiaImagem"  label="Copiar imagem"  size="normal" imageMso="PictureInsertFromFile" onAction="rbCopiaImagem" screentip="Copia a seleção como imagem (Ctrl+I)"/>
+        </group>
+
+        <group id="grpAbas" label="Abas">
+          <button id="btnAbasApoio"    label="Abas de apoio"  size="large"  imageMso="WindowHide"         onAction="rbAbasApoio"    screentip="Mostra/oculta todas as abas com 'apoio' no nome"/>
+        </group>
+
+        <group id="grpAlertas" label="Auditoria">
+          <button id="btnAlertas"      label="Criar alertas"  size="large"  imageMso="ReviewNewComment"   onAction="BtnCriarAlertas" screentip="Cria a aba ALERTAS (erros de fórmula e comentários) no arquivo ativo"/>
+        </group>
+
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>

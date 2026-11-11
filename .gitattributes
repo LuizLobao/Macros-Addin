@@ -1,0 +1,15 @@
+# Módulos VBA: o VBE exige Windows-1252 + CRLF. Nunca deixe o Git converter.
+*.bas -text diff
+*.cls -text diff
+*.frm -text diff
+*.frx binary
+
+# Binários do Office
+*.xlam binary
+*.xlsm binary
+*.xlsx binary
+*.xlsb binary
+
+# Texto comum
+*.md  text eol=lf
+*.xml text eol=lf

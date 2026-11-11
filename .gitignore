@@ -1,0 +1,13 @@
+# Arquivos temporários do Office
+~$*
+*.tmp
+
+# O .xlam compilado vai em Releases, não no código
+*.xlam
+*.xlsm
+*.xlsx
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
