@@ -25,7 +25,7 @@ O código fica versionado aqui como arquivos `.bas` (texto puro), e qualquer pes
 ## Conteúdo do repositório
 
 ```
-meuAddin/
+Macros-Addin/
 ├── README.md                  ← este guia
 ├── CHANGELOG.md               ← histórico de versões
 ├── LICENSE                    ← licença MIT
@@ -36,8 +36,9 @@ meuAddin/
 │   ├── modInstalador.bas      ← cria o Sistema de Alertas no arquivo ativo
 │   ├── modAlertasModelo.bas   ← código-modelo copiado para o arquivo do usuário
 │   └── modRibbon.bas          ← callbacks dos botões da Faixa de Opções
-└── ribbon/
-    └── customUI14.xml         ← definição da guia "Macros Lobão" (opcional)
+├── ribbon/
+│   └── customUI14.xml         ← definição da guia "Macros Lobão" (opcional)
+└── meuAddin.zip               ← os mesmos arquivos acima, compactados
 ```
 
 | Módulo | Papel |
@@ -65,7 +66,8 @@ meuAddin/
 Na página do repositório, clique em **Code → Download ZIP** e extraia em qualquer pasta. Ou, se usa Git:
 
 ```bash
-git clone https://github.com/<seu-usuario>/meuAddin.git
+git clone https://github.com/LuizLobao/Macros-Addin.git
+cd Macros-Addin
 ```
 
 ### 2. Crie um arquivo em branco e abra o editor VBA
@@ -405,4 +407,4 @@ O VBE importa e exporta `.bas` em **Windows-1252 (ANSI)** com quebras de linha *
 
 Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).
 
-Feito por **Lobão**.
+Feito por **Luiz Lobão** ([@LuizLobao](https://github.com/LuizLobao)).
